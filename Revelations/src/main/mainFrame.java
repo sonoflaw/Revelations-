@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import accessories.ClassPane;
 import accessories.Student;
@@ -41,7 +42,9 @@ public class mainFrame extends JFrame implements ActionListener{
 	private JPanel panel7;
 	
 	private ArrayList<ClassPane> classes = new ArrayList<ClassPane>();
-	private ArrayList<JButton> buttons = new ArrayList<JButton>();
+	private ArrayList<JButton> classButtons = new ArrayList<JButton>();
+	private ArrayList<JButton> editClassesButtons = new ArrayList<JButton>();
+	private ArrayList<JTextField> editClasses = new ArrayList<JTextField>();
 	private JTextField enterClasses;
 		
 	public void Frame1(){
@@ -78,8 +81,13 @@ public class mainFrame extends JFrame implements ActionListener{
 	public void createClass(int i){
 		int x = 100, y = 100, height = 200, width = 200, temp = 0;
 		
-		buttons.add(new JButton("Class"+(i+1)));
-		buttons.get(i).addActionListener(this);
+		classButtons.add(new JButton("Class "+(i+1)));
+		classButtons.get(i).addActionListener(this);
+		editClasses.add(new JTextField("Enter class name"));
+		editClasses.get(i).setHorizontalAlignment(SwingConstants.CENTER);
+		editClasses.get(i).addActionListener(this);
+		editClassesButtons.add(new JButton("Edit class name"));
+		editClassesButtons.get(i).addActionListener(this);
 		classes.add(new ClassPane());
 		classes.get(i).getWelcomeTab().getButton().addActionListener(this);
 		
@@ -89,31 +97,28 @@ public class mainFrame extends JFrame implements ActionListener{
 			temp++;
 			if (temp >= 5)
 			{
-				y+=220;
+				y+=240;
 				x = 100;
 				temp = 0;
 			}
 		}
 		
-		buttons.get(i).setBounds(x, y, width, height);
-		panel7.add(buttons.get(i));
+		classButtons.get(i).setBounds(x, y, width, height);
+		editClasses.get(i).setBounds(x, y, width, height);
+		editClassesButtons.get(i).setBounds(x, y+200, width, 20);
+		editClasses.get(i).setVisible(false);
+		panel7.add(classButtons.get(i));
+		panel7.add(editClasses.get(i));
+		panel7.add(editClassesButtons.get(i));
 		panel7.revalidate();
 		panel7.repaint();
 		
 	}
 	
-	public void goBack(){
-		
-		
-		
-	}
-	
-	
 	public static void main(String[] args) throws InterruptedException{
 		// TODO Auto-generated method stub
 		mainFrame revelations = new mainFrame();
-		revelations.Frame1();
-		
+		revelations.Frame1();	
 	}	
 
 	
@@ -138,20 +143,32 @@ public class mainFrame extends JFrame implements ActionListener{
 		
 		else for (int i = 0; i<classes.size(); i++)
 		{
-			if (e.getSource() == buttons.get(i))
+			if (e.getSource() == classButtons.get(i))
 			{
 				panel7.setVisible(false);
 				classes.get(i).setVisible(true);
 				classes.get(i).setSize(1280, 720);
 				this.add(classes.get(i));
-			
-			
 			}
 			
 			else if(e.getSource() == classes.get(i).getWelcomeTab().getButton())
 			{
 				classes.get(i).setVisible(false);
 				panel7.setVisible(true);
+			}
+			
+			else if(e.getSource() == editClasses.get(i))
+			{
+				editClasses.get(i).setVisible(false);
+				classButtons.get(i).setText(editClasses.get(i).getText());
+				classButtons.get(i).setVisible(true);
+				
+			}
+			
+			else if(e.getSource() == editClassesButtons.get(i))
+			{
+				classButtons.get(i).setVisible(false);
+				editClasses.get(i).setVisible(true);
 			}
 		}
 	}	
