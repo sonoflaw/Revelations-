@@ -43,8 +43,8 @@ public class mainFrame extends JFrame implements ActionListener{
 	
 	private ArrayList<ClassPane> classes = new ArrayList<ClassPane>();
 	private ArrayList<JButton> classButtons = new ArrayList<JButton>();
-	private ArrayList<JButton> editClassesButtons = new ArrayList<JButton>();
-	private ArrayList<JTextField> editClasses = new ArrayList<JTextField>();
+	private ArrayList<JButton> classTextFieldsButtons = new ArrayList<JButton>();
+	private ArrayList<JTextField> classTextFields = new ArrayList<JTextField>();
 	private JTextField enterClasses;
 		
 	public void Frame1(){
@@ -83,11 +83,11 @@ public class mainFrame extends JFrame implements ActionListener{
 		
 		classButtons.add(new JButton("Class "+(i+1)));
 		classButtons.get(i).addActionListener(this);
-		editClasses.add(new JTextField("Enter class name"));
-		editClasses.get(i).setHorizontalAlignment(SwingConstants.CENTER);
-		editClasses.get(i).addActionListener(this);
-		editClassesButtons.add(new JButton("Edit class name"));
-		editClassesButtons.get(i).addActionListener(this);
+		classTextFields.add(new JTextField("Enter class name"));
+		classTextFields.get(i).setHorizontalAlignment(SwingConstants.CENTER);
+		classTextFields.get(i).addActionListener(this);
+		classTextFieldsButtons.add(new JButton("Edit class name"));
+		classTextFieldsButtons.get(i).addActionListener(this);
 		classes.add(new ClassPane());
 		classes.get(i).getWelcomeTab().getButton().addActionListener(this);
 		
@@ -104,12 +104,12 @@ public class mainFrame extends JFrame implements ActionListener{
 		}
 		
 		classButtons.get(i).setBounds(x, y, width, height);
-		editClasses.get(i).setBounds(x, y, width, height);
-		editClassesButtons.get(i).setBounds(x, y+200, width, 20);
-		editClasses.get(i).setVisible(false);
+		classTextFields.get(i).setBounds(x, y, width, height);
+		classTextFieldsButtons.get(i).setBounds(x, y+200, width, 20);
+		classTextFields.get(i).setVisible(false);
 		panel7.add(classButtons.get(i));
-		panel7.add(editClasses.get(i));
-		panel7.add(editClassesButtons.get(i));
+		panel7.add(classTextFields.get(i));
+		panel7.add(classTextFieldsButtons.get(i));
 		panel7.revalidate();
 		panel7.repaint();
 		
@@ -157,18 +157,20 @@ public class mainFrame extends JFrame implements ActionListener{
 				panel7.setVisible(true);
 			}
 			
-			else if(e.getSource() == editClasses.get(i))
+			else if(e.getSource() == classTextFields.get(i))
 			{
-				editClasses.get(i).setVisible(false);
-				classButtons.get(i).setText(editClasses.get(i).getText());
+				classTextFields.get(i).setVisible(false);
+				classButtons.get(i).setText(classTextFields.get(i).getText());
+				classes.get(i).setTitle(classTextFields.get(i).getText());
 				classButtons.get(i).setVisible(true);
+				System.out.println("Edited name of class to "+classTextFields.get(i).getText());
 				
 			}
 			
-			else if(e.getSource() == editClassesButtons.get(i))
+			else if(e.getSource() == classTextFieldsButtons.get(i))
 			{
 				classButtons.get(i).setVisible(false);
-				editClasses.get(i).setVisible(true);
+				classTextFields.get(i).setVisible(true);
 			}
 		}
 	}	
