@@ -8,17 +8,11 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
-import javax.swing.Action;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
+import javax.swing.*;
 
+import accessories.ClassPane;
 import accessories.Student;
 
 import tabs.Gradebook;
@@ -27,7 +21,7 @@ import tabs.ToDoList;
 import tabs.WelcomeTab;
 
 
-public class mainFrame extends JFrame {
+public class mainFrame extends JFrame implements ActionListener{
 	/**
 	 * 
 	 */
@@ -35,108 +29,144 @@ public class mainFrame extends JFrame {
 	/**
 	 * @param args
 	 */
-	private JLabel lab1, lab2, lab3;
-	private JButton button, button1;
-	private JTabbedPane tabs;
-	private JPanel panel1, panel2, panel3, panel4, panel5, panel6, panel7;
-	private SeatingChart seats;
-	private ToDoList todo;
-	private WelcomeTab welcomeTab;
-	private Gradebook gradebook;
-
+	private JLabel title, question;
+	private JPanel panel7;
 	
+	private ArrayList<ClassPane> classes = new ArrayList<ClassPane>();
+	private ArrayList<JButton> classButtons = new ArrayList<JButton>();
+	private ArrayList<JButton> classTextFieldsButtons = new ArrayList<JButton>();
+	private ArrayList<JTextField> classTextFields = new ArrayList<JTextField>();
+	private JTextField enterClasses;
 		
 	public void Frame1(){
 		this.setTitle("Revelations");
-		
+		this.setLayout(null);
 		this.setSize(1280, 720);
 		this.setVisible(true);
+		
 		panel7 = new JPanel();
-		add(panel7);
-        panel7.add(lab1 = new JLabel("REVELATIONS"));
-        lab1.setFont(new Font("Serif", Font.PLAIN, 72));
 		panel7.setVisible(true);
+		add(panel7);
+		
+        panel7.add(title = new JLabel("REVELATIONS"));
+        title.setFont(new Font("Serif", Font.PLAIN, 72));
+        title.setBounds(400, 0, 1000, 100);
+        
 		panel7.setBackground(Color.lightGray);
-		button1 = new JButton("Begin Program");
-		panel7.add(button1);
-		button1.setSize(300,100);
-		//button1.setBounds(400, 500, 300, 100);
-		button1.setVisible(true);
-		button1.addActionListener(new ActionListener() {
-			 
-            public void actionPerformed(ActionEvent f)
-            {
-                //Execute when button is pressed
-                System.out.println("Start button clicked");
-                panel7.setVisible(false);
-                Testing();
-                
-            }
-        });     
+		panel7.setSize(1280, 720);
+		panel7.setLayout(null);
 		
 		
-	}
-	public void Testing(){
+		question = new JLabel("Please enter the number of classes that you would like to start out with");
+		question.setBounds(400,150,500,50);
 		
-		welcomeTab = new WelcomeTab();
-		welcomeTab.setVisible(true);
+		enterClasses = new JTextField();
+		enterClasses.setBounds(570, 200, 100, 20);
+		enterClasses.addActionListener(this);
 		
+		panel7.add(question);
+		panel7.add(enterClasses);
 		
-		gradebook = new Gradebook();
-		gradebook.setVisible(true);
-		
-		panel2 = new JPanel();
-		panel2.setVisible(true);
-		panel2.setLayout(null);
-		lab3 = new JLabel("Coming Soon!");
-		lab3.setFont(new Font("Serif", Font.PLAIN, 40));
-		lab3.setBounds(550, 200, 400, 100);
-		panel2.add(lab3);
-		
-		todo = new ToDoList();
-		todo.setVisible(true);
-		
-		panel4 = new JPanel();
-		panel4.setVisible(true);
-		panel4.setLayout(null);
-		lab2 = new JLabel("Coming Soon!");
-		lab2.setFont(new Font("Serif", Font.PLAIN, 40));
-		lab2.setBounds(550, 200, 400, 100);
-		panel4.add(lab2);
-		
-		seats = new SeatingChart();
-		seats.setVisible(true);
-		
-		
-		
-		tabs = new JTabbedPane();
-		tabs.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
-		tabs.setVisible(true);
-		tabs.setSize(1000, 500);
-		
-		tabs.addTab("Welcome", null, welcomeTab, "Overview");
-		tabs.addTab("Gradebook", null, gradebook, "Edit assignments and grades");
-		
-		tabs.addTab("To Do", null, todo, "View your impending tasks");
-		tabs.addTab("Calendar", null, panel4, "Enter important dates");
-		tabs.addTab("Seating Chart", null, seats, "Vew your class layout");
-		
-		
-		add(tabs);
-		//getContentPane().setBackground(Color.green);
-		
-
 	}
 	
+	public void createClass(int i){
+		int x = 100, y = 100, height = 200, width = 200, temp = 0;
+		
+		classButtons.add(new JButton("Class "+(i+1)));
+		classButtons.get(i).addActionListener(this);
+		classTextFields.add(new JTextField("Enter class name"));
+		classTextFields.get(i).setHorizontalAlignment(SwingConstants.CENTER);
+		classTextFields.get(i).addActionListener(this);
+		classTextFieldsButtons.add(new JButton("Edit class name"));
+		classTextFieldsButtons.get(i).addActionListener(this);
+		classes.add(new ClassPane());
+		classes.get(i).getWelcomeTab().getButton().addActionListener(this);
+		
+		for (int a = 0; a<i; a++)
+		{
+			x+= 220;
+			temp++;
+			if (temp >= 5)
+			{
+				y+=240;
+				x = 100;
+				temp = 0;
+			}
+		}
+		
+		classButtons.get(i).setBounds(x, y, width, height);
+		classTextFields.get(i).setBounds(x, y, width, height);
+		classTextFieldsButtons.get(i).setBounds(x, y+200, width, 20);
+		classTextFields.get(i).setVisible(false);
+		panel7.add(classButtons.get(i));
+		panel7.add(classTextFields.get(i));
+		panel7.add(classTextFieldsButtons.get(i));
+		panel7.revalidate();
+		panel7.repaint();
+		
+	}
 	
 	public static void main(String[] args) throws InterruptedException{
 		// TODO Auto-generated method stub
-		mainFrame testing = new mainFrame();
-		testing.Frame1();
-		
+		mainFrame revelations = new mainFrame();
+		revelations.Frame1();	
+		revelations.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
+
 	}	
 
 	
+	
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		
+		if(e.getSource() == enterClasses)
+		{
+			System.out.println("Create "+enterClasses.getText()+ " classes");
+			question.setVisible(false);
+			enterClasses.setVisible(false);
+			for (int i = 0; i<Integer.parseInt(enterClasses.getText());i++ )
+			{
+				createClass(i);
+				
+			}
+		}
+		
+		
+		
+		else for (int i = 0; i<classes.size(); i++)
+		{
+			if (e.getSource() == classButtons.get(i))
+			{
+				panel7.setVisible(false);
+				classes.get(i).setVisible(true);
+				classes.get(i).setSize(1280, 720);
+				this.add(classes.get(i));
+			}
+			
+			else if(e.getSource() == classes.get(i).getWelcomeTab().getButton())
+			{
+				classes.get(i).setVisible(false);
+				panel7.setVisible(true);
+			}
+			
+			else if(e.getSource() == classTextFields.get(i))
+			{
+				classTextFields.get(i).setVisible(false);
+				classButtons.get(i).setText(classTextFields.get(i).getText());
+				classes.get(i).setTitle(classTextFields.get(i).getText());
+				classButtons.get(i).setVisible(true);
+				System.out.println("Edited name of class to "+classTextFields.get(i).getText());
+				
+			}
+			
+			else if(e.getSource() == classTextFieldsButtons.get(i))
+			{
+				classButtons.get(i).setVisible(false);
+				classTextFields.get(i).setVisible(true);
+			}
+		}
+	}	
 }
 
 
