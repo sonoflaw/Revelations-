@@ -10,16 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-import javax.swing.Action;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
 import accessories.ClassPane;
 import accessories.Student;
@@ -119,6 +110,8 @@ public class mainFrame extends JFrame implements ActionListener{
 		// TODO Auto-generated method stub
 		mainFrame revelations = new mainFrame();
 		revelations.Frame1();	
+		revelations.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
+
 	}	
 
 	
